@@ -59,6 +59,13 @@ public class OrderRepositoryTest {
     }
 
     @Test
+    public void testFindAll() {
+        List<Order> orders = orderRepository.findAll();
+
+        Assertions.assertEquals(3, orders.size());
+    }
+
+    @Test
     public void testDelete() {
         Long orderId = 42L;
         Order order = new Order();

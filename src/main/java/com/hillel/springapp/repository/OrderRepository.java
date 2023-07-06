@@ -23,9 +23,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     void delete(@NonNull Order order);
 
-    //    @Modifying
-//    @Query("UPDATE Order o SET o.products = :productList WHERE o.id = :orderId")
-//    void addProductToOrder(@Param("orderId") Long orderId, @Param("productList") List<Product> productList);
     @Modifying
     @Query("UPDATE Order o SET o.products = :productList WHERE o.id = :orderId")
     void addProductToOrder(@Param("orderId") Long orderId, @Param("productList") List<Product> productList);
