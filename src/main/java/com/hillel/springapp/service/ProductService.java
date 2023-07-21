@@ -7,10 +7,10 @@ import com.hillel.springapp.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -28,7 +28,8 @@ public class ProductService {
 
     public ProductDTO getProductById(Long id) {
         logger.info("Getting product by ID: {}", id);
-        return productMapper.productToProductDTO(productRepository.findById(id).orElse(null));
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(productMapper::productToProductDTO).orElse(null);
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -37,7 +38,6 @@ public class ProductService {
         return productMapper.productsToProductDTOs(products);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     public ProductDTO addProduct(ProductDTO productDTO) {
         logger.info("Adding new product: {}", productDTO);
         Product product = productMapper.productDTOToProduct(productDTO);
@@ -45,7 +45,6 @@ public class ProductService {
         return productMapper.productToProductDTO(savedProduct);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     public boolean deleteProduct(Long id) {
         logger.info("Deleting product with ID: {}", id);
         if (productRepository.findById(id).isPresent()) {
